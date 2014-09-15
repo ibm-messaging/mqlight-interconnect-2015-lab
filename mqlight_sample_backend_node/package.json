@@ -1,0 +1,16 @@
+{
+  "name" : "mqlight-sample-backendend-node",
+  "description" : "Back-end Worker example for IBM MQ Light",
+  "version" : "1.0.0",
+  "dependencies" : {
+    "mqlight-dev" : "",
+    "hashmap" : "",
+    "moment" : "",
+    "node-uuid" : "",
+    "npmlog" : ""
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts" : {"start":"node app.js"}
+}

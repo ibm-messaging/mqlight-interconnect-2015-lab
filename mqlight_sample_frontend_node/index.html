@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- 		(C) COPYRIGHT International Business Machines Corp., 2013 -->
+<!-- All rights reserved * Licensed Materials - Property of IBM         -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="style.css" rel="stylesheet" type="text/css" />
+<title>Messaging Sample Client</title>
+<script type="text/javascript">
+
+	function onLoad() {
+		schedulePoll(500);
+	}
+
+	function schedulePoll(timeoutmillis) {
+		setTimeout(function() { doGET();}, timeoutmillis);
+	}
+	
+	function doGET() {
+		var url = "rest/wordsuppercase?" + (new Date()).getTime(); // Cross-browser cache disable
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = function() {
+			pollStateChanged(this);
+		};
+		request.open("GET", url, true);
+		request.responseType = "json";
+		request.send();	
+	}
+
+	function pollStateChanged(xhr) {
+		if (xhr.readyState == 4) /* DONE */{
+			var nextpolldelay = 500;
+			if (xhr.status == 200) {
+				// We have some data 
+				printResult(xhr.response);
+				nextpolldelay = 5;
+			} else {
+				if (xhr.status != 204) {
+					// Interesting error status
+					console.log("GET failed with " + xhr.status);
+				}
+			}
+			// schedule the next poll
+			schedulePoll(nextpolldelay);
+		}
+	}
+
+	function escapeHtml(text) {
+	    return text
+	         .replace(/&/g, "&amp;")
+	         .replace(/</g, "&lt;")
+	         .replace(/>/g, "&gt;")
+	         .replace(/"/g, "&quot;")
+	         .replace(/'/g, "&#039;");
+	 }
+	
+	function printResult(result) {
+		var resultWord = result.word;
+		var divClass = "result";
+		var backEnd = result.backend;
+		if (backEnd != null) {
+			if ((/^Node/).test(backEnd)) {
+				divClass = "noderesult";
+			} else if ((/^Liberty/).test(backEnd)) {
+				divClass = "libertyresult";
+			}
+		}
+		
+		var resultsDiv = document.getElementById("results");
+		var resultDiv = document.createElement("div");
+		resultDiv.className = divClass;		
+		resultDiv.innerHTML = escapeHtml(resultWord);
+		resultsDiv.appendChild(resultDiv);
+	}
+
+	function submitRequest() {
+		var url = "rest/words";
+		var words = document.getElementById("message").value;
+
+		var request = new XMLHttpRequest();
+		request.open("POST", url, true);
+		request.setRequestHeader('Content-Type','application/json');
+		request.send(JSON.stringify({"words":words}));
+	}
+	
+	function checkSubmitKey(e) {
+		var charCode;
+		if (e && e.which) {
+			charCode = e.which;
+		} else if (window.event) {
+			e = window.event;
+			charCode = e.keyCode;
+		}
+		if (charCode == 13) {
+			submitRequest();
+		}
+	}	
+</script>
+</head>
+<body onload="onLoad();">
+<div class="header">
+    <img src="images/lanim.gif" width="150" height="47" border="0" id="header-left-img">
+    <img src="images/WEBSPHERE_18P_UNIX.GIF" width="110" height="14" border="0" id="header-right-img">
+</div>
+<div class="main">
+	<h2>Sample Messaging Application:- Worker Offload Pattern</h2>
+	<p>This sample demonstrates the use of a simple worker-offload
+		pattern that uses the MQ Light messaging service.</p>
+	<img src="images/workeroffload.jpg" alt="Worker offload diagram" />
+	<p>The worker-offload
+		pattern improves responsiveness by allowing a user interface front-end
+		web process to delegate work to one or more back-end worker processes.<br/>
+	    In this simple sample application we take a sentence entered by you and to
+	    convert it to uppercase.</p>
+	    <ul>
+		    <li>Type a sentence in the box and press submit</li>
+		    <li>The front-end web application breaks the sentence into individual words
+		    and sends each word as a separate message to one or more back-end worker processes.</li>
+		    <li>Each back-end worker process converts the word it receives to uppercase, and sends
+		    out a notification containing the uppercase word.</li>
+		    <li>The front-end web application is listening for upper case word notifications,
+		    and will display them whenever they arrive.</li>
+	    </ul>
+	 <p>Note
+		that messages may not arrive in the order in which they are sent, as
+		each worker can take a variable amount of time to process a message.<br/>
+		If you run multiple front-ends, all listening with the same shared
+		identity (their 'durable subscription') then only one will see each word.<br/>
+		If you run both the Node.js and Liberty for Java back-end processes, then you
+		will see two responses for each message because the
+		two samples use different identities.
+		</p>
+	 <div class="noderesult">Words from the Node.js sample back-end look like this</div>
+	 <div class="libertyresult">Words from the Liberty for Java sample back-end look like this</div>
+
+	<div class="inputform">
+	  <form>
+			<b>Sentence:</b>
+			<input type="text" size="100" maxlength="200" name="message"
+				id="message" onkeypress="checkSubmitKey(event)"
+				value="One, Two, Three, Four, Five, Once I Caught a Fish Alive"/>
+			<input type="button" id="submit"
+				value="Submit Work " onclick="submitRequest()" />
+		</form>
+	</div>
+	<div id="results"> 
+ 
+	</div>
+</div>
+</body>
+</html>

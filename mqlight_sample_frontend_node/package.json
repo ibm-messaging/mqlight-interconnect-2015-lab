@@ -1,0 +1,18 @@
+{
+  "name" : "mqlight-sample-frontend-node",
+  "description" : "Front-end example for IBM MQ Light",
+  "version" : "1.0.0",
+  "dependencies" : {
+    "mqlight-dev" : "*",
+    "hashmap" : "*",
+    "moment" : "*",
+    "node-uuid" : "*",
+    "npmlog" : "*",
+    "express" : "*",
+    "body-parser" : "*"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts" : {"start":"node app.js"}
+}
