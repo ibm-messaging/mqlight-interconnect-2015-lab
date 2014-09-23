@@ -16,7 +16,7 @@ var PUBLISH_TOPIC = "mqlight/sample/wordsuppercase";
 
 var SHARE_ID = "node-back-end";
 	
-var mqlight = require('mqlight-dev');
+var mqlight = require('mqlight');
 
 /*
  * Establish MQ credentials

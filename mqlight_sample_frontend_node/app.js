@@ -19,7 +19,7 @@ var SHARE_ID = "node-front-end";
 var http = require('http');
 var express = require('express');
 var fs = require('fs');
-var mqlight = require('mqlight-dev');
+var mqlight = require('mqlight');
 var bodyParser = require('body-parser');
 
 /*
