@@ -70,7 +70,6 @@ var mqlightClient = mqlight.createClient(opts, function(err) {
  */
 function processMessage(data, delivery) {
 	var word = data.word;
-	console.info(word);
 	try {
 		// Convert JSON into an Object we can work with 
 		data = JSON.parse(data);
@@ -82,6 +81,7 @@ function processMessage(data, delivery) {
 		console.error("Bad data received: " + data);
 	}
 	else {
+		console.log("Received data: " + JSON.stringify(data));
 		// Upper case it and publish a notification
 		var replyData = {
 				"word" : word.toUpperCase(),
@@ -90,6 +90,7 @@ function processMessage(data, delivery) {
 		// Convert to JSON to give the same behaviour as Java
 		// We could leave as an Object, but this is better for interop
 		replyData = JSON.stringify(replyData);
+		console.log("Sending response: " + replyData);
 		mqlightClient.send(PUBLISH_TOPIC, replyData);
 	}
 }

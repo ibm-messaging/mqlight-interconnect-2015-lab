@@ -86,8 +86,9 @@ var heldMsg;
 function processMessage(data, delivery) {
 	try {
 		data = JSON.parse(data);
+		console.log("Received response: " + JSON.stringify(data));
 	} catch (e) {
-		// Expected if we're recieving a Javascript object
+		// Expected if we're receiving a Javascript object
 	}
 	heldMsg = {"data" : data, "delivery" : delivery};
 }
@@ -142,6 +143,7 @@ app.post('/rest/words', function(req,res) {
 			"word" : word,
 			"frontend" : "Node.js: " + mqlightClient.id
 		};
+		console.log("Sending message: " + JSON.stringify(msgData));
 		mqlightClient.send(PUBLISH_TOPIC, msgData);
 		msgCount++; 
 	});
