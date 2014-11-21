@@ -16,7 +16,7 @@ var SUBSCRIBE_TOPIC = "mqlight/sample/wordsuppercase";
 
 var SHARE_ID = "node-front-end";
 
-var mqlightservice = "mqlighttest";
+var mqlightservice = "mqlight";
 
 var http = require('http');
 var express = require('express');

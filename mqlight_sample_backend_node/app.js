@@ -16,7 +16,7 @@ var PUBLISH_TOPIC = "mqlight/sample/wordsuppercase";
 
 var SHARE_ID = "node-back-end";
 
-var mqlightservice = "mqlighttest";
+var mqlightservice = "mqlight";
 	
 var mqlight = require('mqlight');
 
