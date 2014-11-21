@@ -15,6 +15,8 @@ var SUBSCRIBE_TOPIC = "mqlight/sample/words";
 var PUBLISH_TOPIC = "mqlight/sample/wordsuppercase";
 
 var SHARE_ID = "node-back-end";
+
+var mqlightservice = "mqlighttest";
 	
 var mqlight = require('mqlight');
 
@@ -26,10 +28,10 @@ var mqlightService = {};
 if (process.env.VCAP_SERVICES) {
 	var services = JSON.parse(process.env.VCAP_SERVICES);
 	console.log( 'Running BlueMix');
-	if (services[ 'mqlight' ] == null) {
+	if (services[ mqlightservice ] == null) {
 		throw 'Error - Check that app is bound to service';
 	}
-	mqlightService = services['mqlight'][0];
+	mqlightService = services[mqlightservice][0];
 	opts.service = mqlightService.credentials.connectionLookupURI;
 	opts.user = mqlightService.credentials.username;
 	opts.password = mqlightService.credentials.password;
