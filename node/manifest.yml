@@ -3,7 +3,7 @@ applications:
 - name:  MQL.sample.node.backend
   disk: 1024M
   command: node app.js
-  path: mqlight_sample_backend_node
+  path: worker_backend
   memory: 256M
   instances: 2
   no-route: true
@@ -12,8 +12,8 @@ applications:
 - name:  MQL.sample.node.frontend
   disk: 1024M
   command: node app.js
-  path: mqlight_sample_frontend_node
-  memory: 512M
+  path: worker_frontend
+  memory: 256M
   host: mqlightsample-node-${random-word}
   services:
   - MQLight-sampleservice
