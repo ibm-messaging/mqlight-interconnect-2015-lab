@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="build" name="mqlight_sample_frontend_web">
+    
+    <import file="../build.xml"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+
+	<fail message="Please update the liberty.location property to point to your local Liberty installation directory (../wlp) in build.xml!">
+    	<condition>
+        	<or>
+            	<equals arg1="${liberty.location}" arg2=""/>
+            	<not>
+                	<isset property="liberty.location"/>
+            	</not>
+       		</or>
+   		</condition>
+   	</fail>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete file="deploy/mqlight_sample_frontend_web.war"/>
+    </target>
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+    </target>
+
+    <target name="build" depends="build-project,build-war"/>
+    
+    <path id="classpathDir">
+ 		<fileset dir="${liberty.location}/dev/api/spec">  
+        	<include name="**/*.jar" />  
+        </fileset>
+        <fileset dir="${liberty.location}/dev/api/ibm">  
+        	<include name="**/*.jar" />  
+        </fileset>
+    </path>
+    
+    <target name="build-project" depends="clean,init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false">
+            <src path="src"/>
+            <classpath refid="classpathDir"/>
+        </javac>
+    </target>
+ 
+   <target name="build-war" depends="build-project">
+        <war destfile="deploy/mqlight_sample_frontend_web.war" webxml="WebContent/WEB-INF/web.xml">
+	    <fileset dir="WebContent"/>
+		<classes dir="bin"/>
+		<zipfileset dir="src/" includes="**" prefix="WEB-INF/classes"/> 
+	  </war>
+   </target>
+   
+</project>

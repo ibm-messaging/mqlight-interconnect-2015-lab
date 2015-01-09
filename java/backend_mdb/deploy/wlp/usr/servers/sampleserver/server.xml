@@ -1,0 +1,61 @@
+<server description="sampleweb">
+  <!-- 		(C) COPYRIGHT International Business Machines Corp., 2014 -->
+  <!-- All rights reserved * Licensed Materials - Property of IBM         -->
+  <!-- Enable features -->
+  <featureManager>
+    <feature>jsp-2.2</feature>
+    <feature>wmqJmsClient-1.1</feature>
+    <feature>jmsMdb-3.1</feature>
+    <feature>jaxrs-1.1</feature>
+    <feature>jndi-1.0</feature>
+    <feature>servlet-3.0</feature>
+  </featureManager>
+
+  <wmqJmsClient 
+      reconnectionRetryCount="2147483647" 
+      startupRetryCount="2147483647" 
+      reconnectionRetryInterval="5s" 
+      startupRetryInterval="5s" 
+      maxConnections="2147483647"/>
+
+  <jmsTopic id="jms/BackEndWorkerListenTopic" jndiName="jms/BackEndWorkerListenTopic">
+    <properties.wmqJms baseTopicName="mqlight/sample/words"/>
+  </jmsTopic>
+
+  <jmsTopic id="jms/BackEndWorkerNotificationTopic" jndiName="jms/BackEndWorkerNotificationTopic">
+    <properties.wmqJms baseTopicName="mqlight/sample/wordsuppercase"/>
+  </jmsTopic>
+
+  <jmsActivationSpec id="mqlight_sample_backend_mdb/mqlight_sample_backend_mdb/BackEndMDB" jndiName="jms/as_MQLight-sampleservice">
+    <properties.wmqJms 
+        ccdturl="${cloud.services.MQLight-sampleservice.connection.connectionLookupURI}&amp;format=CCDT"
+        userName="${cloud.services.MQLight-sampleservice.connection.username}"
+        password="${cloud.services.MQLight-sampleservice.connection.password}"
+        maxPoolDepth="20"
+        cloneSupport="ENABLED"
+        clientID="mqlightsample"
+        destinationRef="jms/BackEndWorkerListenTopic"
+        subscriptionDurability="Durable"
+        subscriptionName="java-back-end"/>
+  </jmsActivationSpec> 
+
+  <jmsConnectionFactory jndiName="jms/MQLight-sampleservice" connectionManagerRef="ConMgr6">
+    <properties.wmqJms
+        ccdturl="${cloud.services.MQLight-sampleservice.connection.connectionLookupURI}&amp;format=CCDT"
+        userName="${cloud.services.MQLight-sampleservice.connection.username}"
+        password="${cloud.services.MQLight-sampleservice.connection.password}"
+        cloneSupport="ENABLED"
+        clientID="mqlightsample"/>
+  </jmsConnectionFactory>
+  <connectionManager id="ConMgr6" maxPoolSize="10"/>
+
+  <application 
+      type="ear" 
+      id="mqlight_sample_backend_mdb" 
+      name="mqlight_sample_backend_mdb" 
+      location="mqlight_sample_backend_mdb.ear"/>
+
+</server>
+
+
+

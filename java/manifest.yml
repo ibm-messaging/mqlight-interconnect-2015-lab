@@ -1,0 +1,15 @@
+applications:
+- name: MQL.sample.j2ee.backend
+  memory: 256M
+  instances: 2
+  no-route: true
+  path: backend_mdb/deploy
+  services:
+  - MQLight-sampleservice
+- name: MQL.sample.j2ee.frontend
+  memory: 512M
+  instances: 1
+  host: mqlightsample-j2ee-${random-word}
+  path: frontend_web/deploy/mqlight_sample_frontend_web.war
+  services:
+  - MQLight-sampleservice

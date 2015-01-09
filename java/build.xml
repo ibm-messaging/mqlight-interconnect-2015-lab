@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="mqlight-worker-offload-sample-java">  
+	
+   <property name="liberty.location" value="C:\Users\IBM_ADMIN\Liberty\wlp"/> <!-- Please update this variable to point to your local Liberty installation directory (../wlp) -->
+
+	<target name="clean">
+			<subant>
+	      <target name="clean"/>
+				<fileset dir="frontend_web">
+					<include name="build.xml" />
+				</fileset>
+				<fileset dir="backend_mdb">
+					<include name="build.xml" />
+				</fileset>
+			</subant>
+		</target>
+	
+	<target name="build">
+		<subant>
+			<fileset dir="frontend_web">
+				<include name="build.xml" />
+			</fileset>
+			<fileset dir="backend_mdb">
+				<include name="build.xml" />
+			</fileset>
+		</subant>
+	</target>
+</project>
