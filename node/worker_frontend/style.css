@@ -19,7 +19,7 @@ div.main {
   padding: 10px;
 }
 
-div.result, div.noderesult, div.libertyresult {
+div.result, div.rubyresult, div.noderesult, div.libertyresult {
   padding: 3px;
   margin: 3px;
   float: left;
@@ -27,6 +27,10 @@ div.result, div.noderesult, div.libertyresult {
 
 div.result {
     border: 2px solid #000000;  
+}
+
+div.rubyresult {
+    border: 2px solid #cc342d;
 }
 
 div.noderesult {
