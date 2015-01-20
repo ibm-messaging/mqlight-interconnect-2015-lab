@@ -10,14 +10,18 @@
  * IBM - Initial Contribution
  *******************************************************************************/
 
-var PUBLISH_TOPIC = "mqlight/sample/words";
-  
-var SUBSCRIBE_TOPIC = "mqlight/sample/wordsuppercase";
+// PASTE SNIPPET 1 HERE
   
 var http = require('http');
 var express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
+
+// PASTE SNIPPET 2 HERE
+
+// PASTE SNIPPET 9 HERE
+
+// PASTE SNIPPET 3 HERE
 
 /*
  * Establish HTTP credentials, then configure Express
@@ -80,7 +84,7 @@ app.post('/rest/words', function(req,res) {
     };
     console.log("Sending message: " + JSON.stringify(msgData));
 
-    processMessage(msgData);
+    processMessage(msgData);  // REPLACE THIS LINE WITH SNIPPET 4
     msgCount++; 
   });
   // Send back a count of messages sent
