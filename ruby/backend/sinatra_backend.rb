@@ -15,7 +15,7 @@ require 'securerandom'
 configure do
   SUBSCRIBE_TOPIC = 'mqlight/sample/words'
   PUBLISH_TOPIC = 'mqlight/sample/wordsuppercase'
-  SHARE_ID = "fishalive-workers"
+  SHARE_ID = "ruby-back-end"
 
   opts = { id: "sinatra_backend_#{SecureRandom.hex[0..6]}" }
 
