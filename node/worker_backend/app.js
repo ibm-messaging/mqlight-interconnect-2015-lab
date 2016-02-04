@@ -17,6 +17,7 @@ var PUBLISH_TOPIC = "mqlight/sample/wordsuppercase";
 var SHARE_ID = "node-back-end";
 
 var mqlightServiceName = "mqlight";
+var messageHubServiceName = 'messagehub';
 	
 var mqlight = require('mqlight');
 
@@ -27,14 +28,25 @@ var opts = {};
 var mqlightService = {};
 if (process.env.VCAP_SERVICES) {
 	var services = JSON.parse(process.env.VCAP_SERVICES);
-	console.log( 'Running BlueMix');
-	if (services[ mqlightServiceName ] == null) {
+	console.log('Running BlueMix');
+	for (var key in services) {
+		if (key.lastIndexOf(mqlightServiceName, 0) === 0) {
+			mqlightService = services[key][0];
+			opts.service = mqlightService.credentials.nonTLSConnectionLookupURI;
+			opts.user = mqlightService.credentials.username;
+			opts.password = mqlightService.credentials.password;
+		} else if (key.lastIndexOf(messageHubServiceName, 0) === 0) {
+			messageHubService = services[key][0];
+			opts.service = messageHubService.credentials.connectionLookupURI;
+			opts.user = messageHubService.credentials.user;
+			opts.password = messageHubService.credentials.password;
+		}
+	}
+	if (!opts.hasOwnProperty('service') ||
+	    !opts.hasOwnProperty('user') ||
+	    !opts.hasOwnProperty('password')) {
 		throw 'Error - Check that app is bound to service';
 	}
-	mqlightService = services[mqlightServiceName][0];
-	opts.service = mqlightService.credentials.nonTLSConnectionLookupURI;
-	opts.user = mqlightService.credentials.username;
-	opts.password = mqlightService.credentials.password;
 } else {
 	opts.service = 'amqp://localhost:5672';
 }
